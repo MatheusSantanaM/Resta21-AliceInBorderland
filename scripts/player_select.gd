@@ -24,27 +24,30 @@ var player_b_char_id: int = 0
 func _ready() -> void:
 	popup_a = character_a.get_popup()
 	popup_b = character_b.get_popup()
-	
+	setup_character_menus()
 	# Conecta os sinais de clique nas opções dos menus
 	popup_a.index_pressed.connect(func(idx): _on_item_selected(idx, popup_a, character_a, true))
 	popup_b.index_pressed.connect(func(idx): _on_item_selected(idx, popup_b, character_b, false))
 	
 func _on_item_selected(index: int, popup: PopupMenu, button: MenuButton, is_player_a: bool) -> void:
-	# 1. Pega o ID e o Nome do personagem clicado
 	var char_id = popup.get_item_id(index)
 	var char_name = popup.get_item_text(index)
-	
-	# 2. Desmarca todos os itens do menu atual para garantir escolha única
+
+	# Impede escolher o personagem já selecionado pelo outro jogador
+	if is_player_a and char_id == player_b_char_id and char_id != 0:
+		print("Personagem já selecionado pelo Jogador B!")
+		return
+	if not is_player_a and char_id == player_a_char_id and char_id != 0:
+		print("Personagem já selecionado pelo Jogador A!")
+		return
+
 	for i in range(popup.item_count):
 		popup.set_item_checked(i, false)
-	
-	# 3. Marca EXPLICITAMENTE o item clicado para a confirmação visual (check box)
+
 	popup.set_item_checked(index, true)
-	
-	# 4. Atualiza o texto do botão com a formatação solicitada
+
 	button.text = "Personagem Selecionado: " + char_name
-	
-	# 5. Armazena a escolha nas variáveis locais E no Global (ALTERADO AQUI)
+
 	if is_player_a:
 		player_a_char_id = char_id
 		Global.player_a_character = char_id
@@ -57,48 +60,13 @@ func setup_character_menus() -> void:
 	popup_a.clear()
 	popup_b.clear()
 	
+	popup_a.add_theme_constant_override("icon_max_width", 140)
+	popup_b.add_theme_constant_override("icon_max_width", 140)
+	
 	for char_data in characters:
 		var tex = load(char_data["icon"]) if ResourceLoader.exists(char_data["icon"]) else null
-		
-		# Adiciona o item como Checkbox (Radio-style)
-		popup_a.add_radio_check_icon_item(tex, char_data["name"], char_data["id"])
-		popup_b.add_radio_check_icon_item(tex, char_data["name"], char_data["id"])
-
-
-# Callback quando o Jogador A escolhe um personagem
-func _on_player_a_selected(id: int) -> void:
-	# Se o Jogador B já escolheu esse personagem, impede ou avisa
-	if id == player_b_char_id:
-		print("Personagem já selecionado pelo Jogador B!")
-		return
-	
-	player_a_char_id = id
-	_update_checkboxes(popup_a, id)
-	
-	# Atualiza o texto do botão principal do Jogador A
-	character_a.text = _get_character_name_by_id(id)
-
-
-# Callback quando o Jogador B escolhe um personagem
-func _on_player_b_selected(id: int) -> void:
-	# Se o Jogador A já escolheu esse personagem, impede ou avisa
-	if id == player_a_char_id:
-		print("Personagem já selecionado pelo Jogador A!")
-		return
-	
-	player_b_char_id = id
-	_update_checkboxes(popup_b, id)
-	
-	# Atualiza o texto do botão principal do Jogador B
-	character_b.text = _get_character_name_by_id(id)
-
-
-# Atualiza os checkboxes de um PopupMenu para marcar apenas a opção escolhida
-func _update_checkboxes(popup: PopupMenu, selected_id: int) -> void:
-	for i in range(popup.item_count):
-		var item_id = popup.get_item_id(i)
-		popup.set_item_checked(i, item_id == selected_id)
-
+		popup_a.add_icon_radio_check_item(tex, char_data["name"], char_data["id"])
+		popup_b.add_icon_radio_check_item(tex, char_data["name"], char_data["id"])
 
 # Retorna o nome do personagem dado o seu ID
 func _get_character_name_by_id(id: int) -> String:

@@ -5,10 +5,10 @@ var player_a_character: int = 0
 var player_b_character: int = 0
 
 var characters_data: Dictionary = {
-	1: {"name": "Arisu", "icon": "res://play/Arisu.jpg", "passive": "Último Segundo"},
-	2: {"name": "Usagi", "icon": "res://play/Usagi.jpg", "passive": "Esquiva Reflexa"},
-	3: {"name": "Chishiya", "icon": "res://play/Chishiya.jpg", "passive": "Contagem de Cartas"},
-	4: {"name": "Mira", "icon": "res://play/Mira.jpg", "passive": "Chá das Quatro"}
+	1: {"name": "Arisu", "icon": "res://Characters/Arisu.jpg", "passive": "Último Segundo"},
+	2: {"name": "Usagi", "icon": "res://Characters/Usagi.jpg", "passive": "Esquiva Reflexa"},
+	3: {"name": "Chishiya", "icon": "res://Characters/Chishiya.jpg", "passive": "Previsão de Cartas"},
+	4: {"name": "Mira", "icon": "res://Characters/Mira.jpg", "passive": "Chá das Quatro"}
 }
 
 # Retorna os dados completos do personagem do Jogador A
@@ -55,10 +55,14 @@ func updateBoard():
 		if deck.size() >= 2:
 			carta_oponente = str(deck[1].get_value())
 		skill_message = "[HABILIDADE] Chishiya prevê: sua próxima carta será " + carta_propria + ", a do oponente será " + carta_oponente + "."
-	var char_name = current_player.character_data.get("name", "Sem Habilidade")
-	board.text = 'Vez do ' + (player_1.player_name if player_active else player_2.player_name)
-	board.text += ' | Jogador ' + player_1.player_name + ' - ' + str(player_1.score) + ' pontos '
-	board.text += ' | Jogador ' + player_2.player_name + ' - ' + str(player_2.score) + ' pontos '
+
+	var nome_1 = player_1.character_data.get("name", player_1.player_name)
+	var nome_2 = player_2.character_data.get("name", player_2.player_name)
+	var nome_atual = nome_1 if player_active else nome_2
+
+	board.text = 'Vez de ' + nome_atual
+	board.text += ' | ' + nome_1 + ' - ' + str(player_1.score) + ' pontos '
+	board.text += ' | ' + nome_2 + ' - ' + str(player_2.score) + ' pontos '
 	
 	board.text += '\n' + player_1.show_hands()
 	board.text += '\n' + player_2.show_hands()
