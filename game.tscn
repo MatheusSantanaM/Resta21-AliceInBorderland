@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://lspplp63b0f5"]
+
+[ext_resource type="Script" uid="uid://dmykatoit843c" path="res://main.gd" id="1_dd2wi"]
+
+[node name="game" type="Control" unique_id=1490099496]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dd2wi")
+metadata/_custom_type_script = "uid://78g83kepdq6n"
+metadata/_edit_horizontal_guides_ = [427.0]
+metadata/_edit_vertical_guides_ = [35.0]
+
+[node name="btnPull" type="Button" parent="." unique_id=66561088]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 12.0
+offset_top = 435.0
+offset_right = 256.0
+offset_bottom = 518.0
+theme_override_font_sizes/font_size = 32
+text = "Puxar"
+
+[node name="btnKeep" type="Button" parent="." unique_id=483903525]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 266.0
+offset_top = 436.0
+offset_right = 412.0
+offset_bottom = 519.0
+theme_override_font_sizes/font_size = 32
+text = "Manter"
+
+[node name="btnReset" type="Button" parent="." unique_id=319788957]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 526.0
+offset_right = 412.0
+offset_bottom = 619.0
+theme_override_font_sizes/font_size = 32
+text = "Reiniciar"
+
+[node name="Board" type="Label" parent="." unique_id=308636594]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 43.0
+offset_right = 1134.0
+offset_bottom = 360.0
+theme_override_font_sizes/font_size = 28
+text = "Cartas"
+
+[node name="hand" type="ColorRect" parent="." unique_id=522836464]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.273
+anchor_bottom = 0.416
+offset_left = 421.0
+offset_top = 199.0
+offset_right = 833.504
+offset_bottom = 377.432
+
+[node name="EndGame" type="Label" parent="." unique_id=977410189]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 207.0
+offset_right = 360.0
+offset_bottom = 338.0
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="btnCharacterSelect" type="Button" parent="." unique_id=1079687993]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 526.0
+offset_right = 257.0
+offset_bottom = 619.0
+theme_override_font_sizes/font_size = 25
+text = "Trocar Personagens"
+
+[node name="SkillLabel" type="Label" parent="." unique_id=1256980750]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 342.0
+offset_right = 392.0
+offset_bottom = 419.0
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 2
+
+[connection signal="button_up" from="btnPull" to="." method="_on_puxar_button_up"]
+[connection signal="button_up" from="btnKeep" to="." method="_on_manter_button_up"]
+[connection signal="button_up" from="btnReset" to="." method="_on_btn_reset_button_up"]
+[connection signal="button_up" from="btnCharacterSelect" to="." method="_on_btn_character_select_button_up"]
